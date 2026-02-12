@@ -1,0 +1,61 @@
+CREATE TABLE BORROWER_TBL (
+    BorrowerID VARCHAR2(12) PRIMARY KEY,
+    FullName  VARCHAR2(150),
+    Gender  VARCHAR2(10),
+    DateOfBirth DATE,
+    PrimaryPhone VARCHAR2(20),
+    VillageArea VARCHAR2(150),
+    RiskCategory VARCHAR2(30),
+    Status  VARCHAR2(20)
+);
+
+INSERT INTO BORROWER_TBL VALUES('BR1001','RamanKrishnan','MALE', DATE '1960-05-10','9876500001','Lakshmi Nagar','LOW','ACTIVE');
+INSERT INTO BORROWER_TBL VALUES('BR1002','MeeraLakshmi','FEMALE', DATE '1972-08-22','9876500002','Seethapuram','MEDIUM','ACTIVE');
+INSERT INTO BORROWER_TBL VALUES('BR1003','Joseph Antony','MALE', DATE '1955-01-15','9876500003','St.Mary Colony','HIGH','INACTIVE');
+CREATE TABLE LOAN_TBL (
+    LoanID  VARCHAR2(15) PRIMARY KEY,
+    BorrowerID VARCHAR2(12),
+    ProductName VARCHAR2(100),
+    PrincipalAmount   NUMBER(12,2),
+    AnnualInterestRate  NUMBER(5,2),
+    TermMonths  NUMBER(3),
+    RepaymentFrequency VARCHAR2(20),
+    DisbursementDate DATE,
+    OutstandingPrincipal  NUMBER(12,2),
+    Status VARCHAR2(20),
+    CONSTRAINT fk_borrower
+        FOREIGN KEY (BorrowerID)
+        REFERENCES BORROWER_TBL(BorrowerID)
+);
+
+INSERT INTO LOAN_TBL VALUES('LN2025-001','BR1001','WomenGroupLoan',50000.00,18.00,12,'MONTHLY',DATE '2025-01-15',42000.00,'ACTIVE');
+INSERT INTO LOAN_TBL VALUES('LN2025-002','BR1002','LiveStockLoan',30000.00,20.00,10,'MONTHLY',DATE '2025-02-10',0.00,'CLOSED');
+
+CREATE TABLE INSTALLMENT_TBL (
+    Installment_ID   NUMBER(10) PRIMARY KEY,
+    LoanID   VARCHAR2(15),
+    InstallmentNo NUMBER(5),
+    DueDate DATE,
+    DueAmount NUMBER(12,2),
+    PaidAmount  NUMBER(12,2),
+    PaidDate DATE,
+    Status VARCHAR2(20),
+    CONSTRAINT fk_loan
+        FOREIGN KEY (LoanID)
+        REFERENCES LOAN_TBL(LoanID)
+);
+
+INSERT INTO INSTALLMENT_TBL VALUES('900001','LN2025-001',1,DATE '2025-02-15',5000.00,5000.00,DATE '2025-02-14','PAID');
+INSERT INTO INSTALLMENT_TBL VALUES('900002','LN2025-001',2,DATE '2025-03-15',5000.00,2000.00,NULL,'PARTIALLY_PAID');
+
+
+CREATE TABLE Author_Tbl(
+Author_code NUMBER(5),
+Author_name Varchar2(20),
+Contact_no Number(10)
+);
+
+INSERT INTO Author_Tbl(Author_code,Author_name,Contact_no) VALUES(12345,"Arun",1234560978);
+INSERT INTO Author_Tbl(Author_code,Author_name,Contact_no) VALUES(21435,"Aravind",0987564321);
+INSERT INTO Author_Tbl(Author_code,Author_name,Contact_no) VALUES(54321,"Rajesh",1029384756);
+
